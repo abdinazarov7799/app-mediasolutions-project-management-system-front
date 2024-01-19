@@ -5,13 +5,11 @@ import {
   FormLabel,
   FormControl,
   Input,
-  Button,
   InputGroup,
-  InputLeftAddon,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import InputMask from "react-input-mask";
+import {ButtonFilled} from "../../../components/ui/Button.jsx";
 export default function LoginForm({ loginRequest = () => {}, ...rest }) {
   const {
     handleSubmit,
@@ -20,9 +18,8 @@ export default function LoginForm({ loginRequest = () => {}, ...rest }) {
   } = useForm();
 
   const onSubmit = (values) => {
-    const phone = values.login.replace(/\D/g, "");
     const data = {
-      login: phone,
+      username: values.username,
       password: values.password,
     };
     loginRequest(data);
@@ -30,25 +27,19 @@ export default function LoginForm({ loginRequest = () => {}, ...rest }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl mt={8} isInvalid={errors.login}>
-        <FormLabel htmlFor="login">Phone number</FormLabel>
+      <FormControl mt={8} isInvalid={errors.username}>
+        <FormLabel htmlFor="username">User Name</FormLabel>
         <InputGroup>
-          <InputLeftAddon children="+998" />
           <Input
-            id="login"
-            {...register("login", {
+            id="username"
+            {...register("username", {
               required: "Phone number is required",
-              minLength: { value: 7, message: "Minimum length should be 7" },
             })}
-            type="tel"
-            placeholder="(__) ___ __ __"
-            mask="(**)-***-****"
-            as={InputMask}
+            placeholder="User name"
           />
         </InputGroup>
-
         <FormErrorMessage>
-          {errors.login && errors.login.message}
+          {errors.username && errors.username.message}
         </FormErrorMessage>
       </FormControl>
       <FormControl mt={5} isInvalid={errors.password}>
@@ -59,7 +50,7 @@ export default function LoginForm({ loginRequest = () => {}, ...rest }) {
           placeholder={"Password"}
           {...register("password", {
             required: "Password  is required",
-            minLength: { value: 4, message: "Minimum length should be 4" },
+            minLength: { value: 8, message: "Minimum length should be 8" },
           })}
         />
         <FormErrorMessage>
@@ -67,14 +58,14 @@ export default function LoginForm({ loginRequest = () => {}, ...rest }) {
         </FormErrorMessage>
       </FormControl>
       <Stack spacing={6} color={"white"}>
-        <Button
+        <ButtonFilled
           mt={8}
-          colorScheme="cyan"
           isLoading={isSubmitting}
           type="submit"
         >
           <Text color="white">Login</Text>
-        </Button>
+        </ButtonFilled>
+        <Text color={'#A4A4A4'} fontSize={14} mt={10} textAlign={"center"}>Copyright © 2024 of Tashkent Media Solutions</Text>
       </Stack>
     </form>
   );

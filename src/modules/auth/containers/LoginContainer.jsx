@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import {Box, Image, Text} from "@chakra-ui/react";
+import React from "react";
+import {Box, Image} from "@chakra-ui/react";
 import LoginForm from "../components/LoginForm";
 import { get } from "lodash";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 import { URLS } from "../../../constants/url";
 import { useSettingsStore, useStore } from "../../../store";
@@ -17,11 +17,8 @@ const LoginContainer = ({ ...rest }) => {
     url: URLS.login,
     hideSuccessToast: true,
   });
-  const setToken = useSettingsStore((state) =>
-    get(state, "setToken", () => {})
-  );
-  const setAuth = useStore((state) => get(state, "setAuth", () => {}));
-
+  const setToken = useSettingsStore((state) => get(state, "setToken", () => {}));
+  const setIsAuthenticated = useStore((state) => get(state, "setIsAuthenticated", () => {}));
   const navigate = useNavigate();
 
   const loginRequest = (data) => {
@@ -29,8 +26,8 @@ const LoginContainer = ({ ...rest }) => {
       { url: URLS.login, attributes: data },
       {
         onSuccess: ({ data }) => {
-          setToken(get(data, "access_token", null));
-          setAuth(true);
+          setToken(get(data,'data.accessToken',null));
+          setIsAuthenticated(true);
           navigate("/auth");
           Swal.fire({
             position: "center",
@@ -53,12 +50,9 @@ const LoginContainer = ({ ...rest }) => {
   return (
     <>
       {isLoading && <OverlayLoader />}
-      <div className="text-center">
-        <Image src={logo} className={"logo"} />
-      </div>
-      <LoginForm loginRequest={loginRequest} />
-      <Box mt={4} textAlign={"center"}>
-        <Link to={'/auth/register'}>{t("Register")}</Link>
+      <Box>
+        <Image src={logo} width={250} height={100} mb={12} mx={"auto"}/>
+        <LoginForm loginRequest={loginRequest} />
       </Box>
     </>
   );

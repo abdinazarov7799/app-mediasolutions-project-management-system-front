@@ -1,9 +1,9 @@
-import React from 'react';
-import useAuth from "../../hooks/auth/useAuth";
+import {isNil} from "lodash";
+import useAuth from "../../hooks/auth/useAuth.js";
 
-const IsAuth = ({children, ...rest}) => {
-    const {isAuthenticated, token = true} = useAuth({});
-    return !!(token) ? children : null
+const IsAuth = ({children}) => {
+    const {isAuthenticated = false,token} = useAuth();
+    return !!(!isNil(token) && isAuthenticated) ? children : null
 };
 
 export default IsAuth;

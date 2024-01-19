@@ -1,6 +1,6 @@
 import React from 'react';
 import {useMutation, useQueryClient} from 'react-query'
-import {request} from "../../services/api";
+import {request} from "../../services/api/index.jsx";
 import {toast} from "react-toastify";
 
 const deleteRequest = (url) => request.delete(url);

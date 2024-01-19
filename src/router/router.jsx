@@ -7,11 +7,12 @@ import AuthLayout from "../layouts/auth";
 import IsGuest from "../services/auth/IsGuest";
 import utc from 'dayjs/plugin/utc'
 import ProfilePage from "../modules/Profile/pages/ProfilePage";
-import ProjectsViewContainer from "../modules/porjects/containers/ProjectsViewContainer.jsx";
 import TranslationPage from "../modules/translation/pages/TranslationPage.jsx";
 import NotFoundPage from "../modules/auth/pages/NotFoundPage.jsx";
-import ProjectsPage from "../modules/porjects/pages/ProjectsPage.jsx";
+import ProjectsPage from "../modules/projects/pages/ProjectsPage.jsx";
 import dayjs from "dayjs";
+import LoginPage from "../modules/auth/pages/LoginPage.jsx";
+import ProjectsViewPage from "../modules/projects/pages/ProjectsViewPage.jsx";
 
 const Router = () => {
   dayjs.extend(utc)
@@ -28,7 +29,7 @@ const Router = () => {
               />
               <Route
                   path={"projects/view/:id"}
-                  element={<ProjectsViewContainer />}
+                  element={<ProjectsViewPage />}
               />
               <Route
                 path={"/translations"}
@@ -53,15 +54,14 @@ const Router = () => {
           </Routes>
         </IsAuth>
 
-        {/*<IsGuest>*/}
-        {/*  <Routes>*/}
-        {/*    <Route path={"/auth"} element={<AuthLayout />}>*/}
-        {/*      <Route index element={<LoginPage />} />*/}
-        {/*      <Route path={'/auth/register'} element={<RegisterPage />} />*/}
-        {/*    </Route>*/}
-        {/*    <Route path={"*"} element={<Navigate to={"/auth"} replace />} />*/}
-        {/*  </Routes>*/}
-        {/*</IsGuest>*/}
+        <IsGuest>
+          <Routes>
+            <Route path={"/auth"} element={<AuthLayout />}>
+              <Route index element={<LoginPage />} />
+            </Route>
+            <Route path={"*"} element={<Navigate to={"/auth"} replace />} />
+          </Routes>
+        </IsGuest>
       </Suspense>
     </BrowserRouter>
   );

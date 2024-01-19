@@ -38,7 +38,7 @@ export default function DashboardLayout() {
             </Drawer>
             <MobileNav
                 onOpen={onOpen}
-                // username={get(user, "username")}
+                username={get(user, "username")}
             />
             <Box p="4">
                 <Outlet/>

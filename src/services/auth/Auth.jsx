@@ -4,24 +4,24 @@ import { KEYS } from "../../constants/key";
 import { URLS } from "../../constants/url";
 import useGetAllQuery from "../../hooks/api/useGetAllQuery";
 import { useStore } from "../../store";
-import {get} from "lodash";
+import {get, isEmpty, isNil} from "lodash";
 import useAuth from "../../hooks/auth/useAuth";
 
 const Auth = ({ children, ...rest }) => {
   const {token} = useAuth({})
   const setUser = useStore((state) => get(state, "setUser", () => {}));
-  const setAuth = useStore((state) => get(state, "setAuth", () => {}));
+  const setIsAuthenticated = useStore((state) => get(state, "setIsAuthenticated", () => {}));
   const { data, isLoading } = useGetAllQuery({
-    key: KEYS.getMe,
-    url: URLS.getMe,
+    key: KEYS.get_me,
+    url: URLS.get_me,
     hideErrorMsg: true,
     enabled:!!token
   });
 
   useEffect(() => {
-    if (get(data, "data")) {
-      setUser(get(data, "data", {}));
-      setAuth(true);
+    if (!isEmpty(get(data, "data")) && !isNil(token)) {
+      setUser(get(data, "data"));
+      setIsAuthenticated(true);
     }
   }, [data]);
 

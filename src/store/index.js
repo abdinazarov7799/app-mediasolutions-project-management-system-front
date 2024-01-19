@@ -5,17 +5,15 @@ import {create} from "zustand";
 
 
 let store = (set) => ({
-    user: null,
-    isAuthenticated: true,
-    // breadcrumbs: [],
+    isAuthenticated: false,
+    user:null,
     setUser: (user) => set(state => ({...state, user})),
-    setAuth: (isAuthenticated) => set(state => ({...state, isAuthenticated})),
-    // setBreadcrumbs: (breadcrumbs) => set(state => ({...state, breadcrumbs}))
+    setIsAuthenticated: (isAuthenticated) => set(state => ({...state, isAuthenticated})),
 })
 
 let settingsStore = (set) => ({
-    token: true,
-    lang: storage.get('lang') ||  config.DEFAULT_APP_LANG,
+    lang: storage.get('lang') || config.DEFAULT_APP_LANG,
+    token: null,
     setToken: (token) => set(state => ({...state, token})),
     setLang: (lang) => set(state => ({...state, lang})),
 })

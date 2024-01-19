@@ -63,9 +63,8 @@ const GlobalStyles = createGlobalStyle`
     background-color: #ffa200 !important;
     color: #fff;
   }
-
+  
   #nprogress .bar {
-    background: #FFA200 !important;
     height: 4px !important;
     z-index: 99999 !important;
   }

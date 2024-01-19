@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectsContainer from "../containers/ProjectsContainer.jsx";
+import ProjectsViewContainer from "../containers/ProjectsViewContainer.jsx";
 
 const ProjectsViewPage = () => {
     return <ProjectsViewContainer />;

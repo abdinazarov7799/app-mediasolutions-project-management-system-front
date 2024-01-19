@@ -1,10 +1,9 @@
 import axios from "axios";
-import { get } from "lodash";
+import {get, isEqual} from "lodash";
 import NProgress from "nprogress";
 import storage from "../storage";
 import config from "../../config";
 import Swal from "sweetalert2";
-import i18next from "i18next";
 
 NProgress.configure({
   showSpinner: true,
@@ -40,19 +39,19 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    const statusCode = error.response.status;
-    if (statusCode === 401) {
+    const statusCode = get(error, 'response.status');
+    if (isEqual(statusCode , 403)) {
         Swal.fire({
           position: "center",
           icon: "error",
           backdrop: "rgba(0,0,0,0.9)",
           background: "none",
-          title: i18next.t("Your token was expired. Please log in again !!! "),
+          title: "Your token was expired. Please log in again !!! ",
           showConfirmButton: true,
           showCancelButton: false,
           confirmButtonColor: "#d33",
           cancelButtonColor: "#13D6D1",
-          confirmButtonText: i18next.t("Log out"),
+          confirmButtonText: "Log out",
           customClass: {
             title: "title-color",
           },
@@ -61,31 +60,7 @@ request.interceptors.response.use(
           window.location.reload();
         });
     }
-    // if (statusCode == 500) {
-    //   if (!includes(error?.config?.url, "user")) {
-    //     Swal.fire({
-    //       position: "center",
-    //       icon: "error",
-    //       backdrop: "rgba(0,0,0,0.9)",
-    //       background: "none",
-    //       title: i18next.t("Sorry, Server is not working"),
-    //       showConfirmButton: true,
-    //       showCancelButton: true,
-    //       confirmButtonColor: "#d33",
-    //       cancelButtonColor: "#13D6D1",
-    //       confirmButtonText: i18next.t("Log out"),
-    //       cancelButtonText: i18next.t("Cancel"),
-    //       customClass: {
-    //         title: "title-color",
-    //       },
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         window.localStorage.clear();
-    //         window.location.reload();
-    //       }
-    //     });
-    //   }
-    // }
+
     NProgress.done(true);
     return Promise.reject(error);
   }

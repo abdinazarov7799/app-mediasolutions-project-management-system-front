@@ -67,25 +67,15 @@ const MobileNav = ({
             <Box display={"flex"}>
                 <HStack>
                     <Box display={{base: "none", md:"flex"}} alignItems={"center"}>
-                        <Tabs pr={5} variant="enclosed">
-                            <TabList>
-                                <Tab>
-                                    <NavLink to={"/"}>
-                                        <Text px={2}>{t('Projects')}</Text>
-                                    </NavLink>
-                                </Tab>
-                                <Tab>
-                                    <NavLink to={"/"}>
-                                        <Text px={2}>{t('Timeline')}</Text>
-                                    </NavLink>
-                                </Tab>
-                                <Tab>
-                                    <NavLink to={"/"}>
-                                        <Text px={2}>{t('Calendar')}</Text>
-                                    </NavLink>
-                                </Tab>
-                            </TabList>
-                        </Tabs>
+                        <NavLink to={"/"}>
+                            <Text px={2}>{t('Projects')}</Text>
+                        </NavLink>
+                        <NavLink to={"/"}>
+                            <Text px={2}>{t('Timeline')}</Text>
+                        </NavLink>
+                        <NavLink to={"/"}>
+                            <Text px={2}>{t('Calendar')}</Text>
+                        </NavLink>
                         <HStack spacing={{base: "2", md: "6"}}>
                             <Menu>
                                 <MenuButton

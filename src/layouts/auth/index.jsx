@@ -2,22 +2,35 @@ import React from 'react';
 import {Outlet} from "react-router-dom";
 
 import {
-    Flex,
+    Flex, Image,
     Stack,
 } from '@chakra-ui/react';
+import BackImg from '../../assets/images/IMG_5280.jpg'
+import styled from "styled-components";
 
+const AuthBackGround = styled.div`
+    width: 55%;
+    position: relative;
+    & img{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+`
 const AuthLayout = ({...rest}) => {
     return (
-        <Stack minH={'100vh'} direction={{base: 'column', md: 'row'}}>
-            <Flex p={8} flex={1} align={'center'} justify={'center'} className={'bg'}>
-                <Stack spacing={4} w={'full'} maxW={'md'}>
+        <Flex minH={'100vh'}>
+            <AuthBackGround>
+                <Image src={BackImg} position={"absolute"}/>
+            </AuthBackGround>
+            <Flex flex={1} align={'center'} justify={'center'} className={'bg'}>
+                <Stack spacing={2} w={'full'} maxW={'md'}>
                     <div className="box">
                         <Outlet/>
                     </div>
                 </Stack>
             </Flex>
-
-        </Stack>
+        </Flex>
     );
 };
 

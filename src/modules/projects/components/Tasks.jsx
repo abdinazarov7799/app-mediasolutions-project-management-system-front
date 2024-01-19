@@ -17,6 +17,8 @@ import {get, isEmpty, isEqual} from "lodash";
 import {getStatus} from "../../../utils/index.js";
 import React, {useState} from "react";
 import NoDataImg from '../../../assets/images/noData.jpg'
+import {ButtonFilled, ButtonOutlined} from "../../../components/ui/Button.jsx";
+import {CreateTask} from "./CreateTask.jsx";
 
 const Tasks = () => {
     const { t } = useTranslation()
@@ -37,41 +39,15 @@ const Tasks = () => {
       <>
             <Flex mt={8}>
                 <Heading pr={5}>{t("Tasks")}</Heading>
-                <Button
+                <ButtonOutlined
                     variant='outline'
                     colorScheme={'blue'}
                     leftIcon={<AiOutlinePlus />}
                     onClick={onOpen}
                 >
                     {t("Add new task")}
-                </Button>
-                <Modal
-                    isOpen={isOpen}
-                    onClose={onClose}
-                >
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>{t("Create new task")}</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody pb={6}>
-                            <FormControl>
-                                <FormLabel>{t("Task name")}</FormLabel>
-                                <Input placeholder={t("Task name")} />
-                            </FormControl>
-
-                            <FormControl mt={4}>
-                                <FormLabel>{t('Required files')}</FormLabel>
-                                <Input placeholder={t('Required files')} />
-                            </FormControl>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button colorScheme='blue' mr={3}>
-                                {t("Create")}
-                            </Button>
-                            <Button onClick={onClose}>{t('Cancel')}</Button>
-                        </ModalFooter>
-                    </ModalContent>
-                </Modal>
+                </ButtonOutlined>
+                <CreateTask isOpen={isOpen} onClose={onClose} />
             </Flex>
           <TableContainer mt={6}>
               {isFetching && <OverlayLoader />}

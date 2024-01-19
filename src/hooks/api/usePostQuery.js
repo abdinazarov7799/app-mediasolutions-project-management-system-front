@@ -1,12 +1,12 @@
 import React from 'react';
 import {useMutation, useQueryClient} from 'react-query'
-import {request} from "../../services/api";
-import {toast} from "react-toastify";
+import {request} from "../../services/api/index.jsx";
+import {useToast} from "@chakra-ui/react";
 
 const postRequest = (url, attributes, config = {}) => request.post(url, attributes, config);
 
 const usePostQuery = ({hideSuccessToast = false, listKeyId = null}) => {
-
+    const toast = useToast()
 
         const queryClient = useQueryClient();
 
@@ -19,7 +19,13 @@ const usePostQuery = ({hideSuccessToast = false, listKeyId = null}) => {
             {
                 onSuccess: (data) => {
                     if (!hideSuccessToast) {
-                        toast.success(data?.data?.message || 'SUCCESS')
+                        toast({
+                            title: data?.data?.message || 'SUCCESS',
+                            position: "top-right",
+                            variant: "left-accent",
+                            status: 'success',
+                            isClosable: true,
+                        })
                     }
 
                     if (listKeyId) {
@@ -27,7 +33,13 @@ const usePostQuery = ({hideSuccessToast = false, listKeyId = null}) => {
                     }
                 },
                 onError: (data) => {
-                    toast.error(data?.response?.data?.message || 'ERROR')
+                    toast({
+                        title: data?.response?.data?.message || 'ERROR',
+                        position: "top-right",
+                        variant: "left-accent",
+                        status: 'error',
+                        isClosable: true,
+                    })
                 }
             }
         );

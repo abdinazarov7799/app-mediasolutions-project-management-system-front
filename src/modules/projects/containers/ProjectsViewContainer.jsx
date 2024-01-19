@@ -1,15 +1,20 @@
-import {Box, Heading, SimpleGrid, Stat, StatLabel, StatNumber} from "@chakra-ui/react";
+import {
+    Box,
+    Heading,
+    SimpleGrid,
+    Stat,
+    StatLabel,
+    StatNumber,
+} from "@chakra-ui/react";
 import React from "react";
 import { get } from "lodash"
 import {useTranslation} from "react-i18next";
 import {useParams} from "react-router";
 import Tasks from "../components/Tasks.jsx";
 
-
 const ProjectsViewContainer = () => {
     const { t } = useTranslation();
     const { id } = useParams();
-
     const mockData = {
         content: [
             {

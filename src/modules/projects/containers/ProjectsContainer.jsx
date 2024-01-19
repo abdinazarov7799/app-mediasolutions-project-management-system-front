@@ -1,26 +1,27 @@
 import {
     Badge,
     Box,
-    Button,
-    Heading,
-    Input,
-    InputGroup,
-    InputRightElement, Table,
+    Flex,
+    Heading, Table,
     TableContainer,
     Tbody, Td,
-    Text,
     Tfoot,
     Th, Thead,
-    Tr
+    Tr, useDisclosure
 } from "@chakra-ui/react";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import OverlayLoader from "../../../components/loader/overlay-loader.jsx";
 import Pagination from "../../../components/pagination/index.jsx";
 import {useNavigate} from "react-router-dom";
 import {get, isEqual} from "lodash";
 import {getStatus} from "../../../utils/index.js";
-import dayjs from "dayjs";
+import {AiOutlinePlus} from "react-icons/ai";
+import {ButtonOutlined} from "../../../components/ui/Button.jsx";
+import {CreateProject} from "../components/CreateProject.jsx";
+import useGetAllQuery from "../../../hooks/api/useGetAllQuery.js";
+import {KEYS} from "../../../constants/key.js";
+import {URLS} from "../../../constants/url.js";
 
 
 
@@ -29,71 +30,30 @@ const ProjectsContainer = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
     const [active, setActive] = useState(null);
-    const [isFetching, setIsFetching] = useState(false)
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {data,isLoading,isFetching} = useGetAllQuery({
+        key: KEYS.projects_list,
+        url: URLS.projects_list,
+        page,
+    });
 
-    const handleChange = (event) => {
-
-    };
-    const data = {
-        content: [
-            {
-                id: 1,
-                name: "Panda Telegram bot",
-                serviceType: "Telegram bot",
-                client: "Misha",
-                responsiblePerson: 'Rajabov A.',
-                participants: 'Diyor, Jamgirov A.',
-                status: 'Yonyabdi',
-                deadline: '24.12.2023'
-            },
-            {
-                id: 2,
-                name: "Panda Telegram bot",
-                serviceType: "Telegram bot",
-                client: "Misha",
-                responsiblePerson: 'Rajabov A.',
-                participants: 'Diyor, Jamgirov A.',
-                status: 'Yonyabdi',
-                deadline: '24.12.2023'
-            },
-            {
-                id: 3,
-                name: "Panda Telegram bot",
-                serviceType: "Telegram bot",
-                client: "Misha",
-                responsiblePerson: 'Rajabov A.',
-                participants: 'Diyor, Jamgirov A.',
-                status: 'Yonyabdi',
-                deadline: '24.12.2023'
-            },
-            {
-                id: 4,
-                name: "Panda Telegram bot",
-                serviceType: "Telegram bot",
-                client: "Misha",
-                responsiblePerson: 'Rajabov A.',
-                participants: 'Diyor, Jamgirov A.',
-                status: 'Yonyabdi',
-                deadline: '24.12.2023'
-            },
-            {
-                id: 5,
-                name: "Panda Telegram bot",
-                serviceType: "Telegram bot",
-                client: "Misha",
-                responsiblePerson: 'Rajabov A.',
-                participants: 'Diyor, Jamgirov A.',
-                status: 'Yonyabdi',
-                deadline: '24.12.2023'
-            },
-        ]
-    }
     return(
         <>
             <Box bg={'white'} p={4} width="100%" borderRadius="md">
-                <Heading>{t('Projects')}</Heading>
+                <Flex alignItems={"center"}>
+                    <Heading mr={4}>{t('Projects')}</Heading>
+                    <ButtonOutlined
+                        variant='outline'
+                        colorScheme={'blue'}
+                        leftIcon={<AiOutlinePlus />}
+                        onClick={onOpen}
+                    >
+                        {t("Create new Project")}
+                    </ButtonOutlined>
+                    <CreateProject isOpen={isOpen} onClose={onClose} />
+                </Flex>
                 <TableContainer mt={6}>
-                    {isFetching && <OverlayLoader />}
+                    {isLoading && <OverlayLoader />}
                     <Table colorScheme="gray" size={"md"} >
                         <Thead>
                             <Tr>

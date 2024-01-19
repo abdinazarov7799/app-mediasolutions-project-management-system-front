@@ -1,6 +1,6 @@
 import React from 'react';
 import {useQuery} from 'react-query'
-import {request} from "../../services/api";
+import {request} from "../../services/api/index.jsx";
 import {toast} from "react-toastify";
 
 const fetchRequest = (url, params) => request.get(url, params);

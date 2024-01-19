@@ -1,29 +1,32 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import I18NextHttpBackend from "i18next-http-backend";
 import config from "../../config";
 import storage from "../storage";
+import Eng from '../../assets/lang/Eng.json';
+import Ru from '../../assets/lang/Ru.json';
+import Uz from '../../assets/lang/Uz.json';
+
+const resources = {
+    en: {
+        translation: Eng
+    },
+    ru: {
+        translation: Ru
+    },
+    uz: {
+        translation: Uz
+    }
+}
+
 const i18config = i18n
   .use(initReactI18next)
-  .use(LanguageDetector)
-  .use(I18NextHttpBackend)
   .init({
-    lng: storage.get("lang") || config.DEFAULT_APP_LANG,
-    fallbackLng: storage.get("lang") || config.DEFAULT_APP_LANG,
-    saveMissing: false,
-    detection: {
-      order: ["localStorage"],
-      lookupLocalStorage: "lang",
-    },
-    react: {
-      useSuspense: true,
-      wait: true,
-    },
-    backend: {
-      loadPath: `${config.API_ROOT}/v2/language/getAllByLanguage?language={{lng}}`,
-      addPath: `${config.API_ROOT}/v2/language/createText`,
-    },
+      resources,
+      lng: storage.get("lang") || config.DEFAULT_APP_LANG,
+      fallbackLng: storage.get("lang") || config.DEFAULT_APP_LANG,
+      interpolation: {
+          escapeValue: false
+      }
   });
 
 export default i18config;

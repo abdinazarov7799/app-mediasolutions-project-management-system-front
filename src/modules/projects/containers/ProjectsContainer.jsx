@@ -14,7 +14,7 @@ import {useTranslation} from "react-i18next";
 import OverlayLoader from "../../../components/loader/overlay-loader.jsx";
 import Pagination from "../../../components/pagination/index.jsx";
 import {useNavigate} from "react-router-dom";
-import {get, isEqual} from "lodash";
+import {get, isArray, isEmpty, isEqual} from "lodash";
 import {getStatus} from "../../../utils/index.js";
 import {AiOutlinePlus} from "react-icons/ai";
 import {ButtonOutlined} from "../../../components/ui/Button.jsx";
@@ -36,6 +36,7 @@ const ProjectsContainer = () => {
         url: URLS.projects_list,
         page,
     });
+    const headData = get(data,'data',{});
 
     return(
         <>
@@ -67,15 +68,14 @@ const ProjectsContainer = () => {
                             </Tr>
 
                         </Thead>
-                        {get(data, "content", [])?.length === 0 ? (
-                            <span
-                                style={{ padding: "10px", margin: "10px", textAlign: "center" }}
-                            >
-              {t("No Data")}
-            </span>
+                        {
+                            (isEmpty(get(headData,'data',[])) && isArray(get(headData,'data',[]))) ? (
+                                <span style={{ padding: "10px", margin: "10px", textAlign: "center" }}>
+                                    {t("No Data")}
+                                </span>
                         ) : (
                             <Tbody>
-                                {get(data, "content", []).map((item, i) => (
+                                {get(headData, "data", []).map((item, i) => (
                                     <Tr
                                         key={i + 1}
                                         onClick={() => setActive(i)}
@@ -89,8 +89,8 @@ const ProjectsContainer = () => {
                                         _hover={{backgroundColor: "rgba(246,210,146,0.35)"}}
                                     >
                                         <Td>{get(item, "name", i)}</Td>
-                                        <Td>{get(item, "serviceType", "-")}</Td>
-                                        <Td>{get(item, "client", "-")}</Td>
+                                        <Td>{get(item, "type", "-")}</Td>
+                                        <Td>{get(item, "clientName", "-")}</Td>
                                         <Td>{get(item, "responsiblePerson", "-")}</Td>
                                         <Td>{get(item, "participants", "-")}</Td>
                                         <Td >

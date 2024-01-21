@@ -31,7 +31,7 @@ const ProjectsContainer = () => {
     const [page, setPage] = useState(0);
     const [active, setActive] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const {data,isLoading,isFetching} = useGetAllQuery({
+    const {data,isLoading,isFetching,refetch} = useGetAllQuery({
         key: KEYS.projects_list,
         url: URLS.projects_list,
         page,
@@ -51,7 +51,7 @@ const ProjectsContainer = () => {
                     >
                         {t("Create new Project")}
                     </ButtonOutlined>
-                    <CreateProject isOpen={isOpen} onClose={onClose} />
+                    <CreateProject isOpen={isOpen} onClose={onClose} refetch={refetch}/>
                 </Flex>
                 <TableContainer mt={6}>
                     {isLoading && <OverlayLoader />}

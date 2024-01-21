@@ -16,7 +16,7 @@ import {get} from "lodash";
 import usePostQuery from "../../../hooks/api/usePostQuery.js";
 import config from "../../../config.js";
 
-export const CreateProject = ({isOpen,onClose,...rest}) => {
+export const CreateProject = ({isOpen,onClose,refetch,...rest}) => {
     const { t } = useTranslation();
     const { mutate, isLoading } = usePostQuery({});
     const {
@@ -27,12 +27,12 @@ export const CreateProject = ({isOpen,onClose,...rest}) => {
 
 
     const onSubmit = (values) => {
-        console.log(values)
         mutate(
             { url: URLS.create_project, attributes: values },
             {
                 onSuccess: ({ data }) => {
-
+                    onClose();
+                    refetch();
                 },
             }
         );

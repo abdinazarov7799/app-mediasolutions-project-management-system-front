@@ -1,4 +1,5 @@
-import { includes, isString } from "lodash";
+import {get, includes, isEqual} from "lodash";
+import config from "../config.js";
 
 const getStatus = (state) => {
   if (includes(state, "SUCCESS")) {
@@ -18,25 +19,24 @@ const getStatus = (state) => {
 
   return "default";
 };
-const getStatusEducation = (state) => {
-  if (includes(state, "CHECK_REQUEST_END")) {
-    return "green";
-  }
-  if (includes(state, "ERROR")) {
-    return "red";
-  }
 
-  if (includes(state, "CHECK_REQUEST_START")) {
-    return "purple";
+const getName = (type,value) => {
+  let name = value
+  if (isEqual(type, 'status')){
+    get(config,'STATUS',[]).map((element) => {
+      if (isEqual(get(element,'value'),value)){
+        name = get(element,'label')
+      }
+    })
+  }else if (isEqual(type, 'service')){
+    get(config,'SERVICE_TYPES',[]).map((element) => {
+      if (isEqual(get(element,'value'),value)){
+        name = get(element,'label')
+      }
+    })
   }
-
-  if (includes(state, "PROCESSING")) {
-    return "blue";
-  }
-
-  return "default";
-};
-
+  return name;
+}
 const isJson = (str) => {
   try {
     JSON.parse(str);
@@ -46,12 +46,8 @@ const isJson = (str) => {
   return true;
 };
 
-const checkString = (str) => {
-  if (isString(str)) {
-    return str.replace(/['"]+/g, "");
-  }
+const formatNumber = (number) => {
+  return Intl.NumberFormat('en-US').format(number)
+}
 
-  return str;
-};
-
-export { getStatus, getStatusEducation, isJson, checkString };
+export { getStatus, isJson, formatNumber, getName};

@@ -52,7 +52,7 @@ const Styled = styled.div`
   }
 `;
 const Pagination = ({
-  pageCount = 2,
+  pageCount = 1,
   page = 0,
   setPage = () => {},
   ...rest

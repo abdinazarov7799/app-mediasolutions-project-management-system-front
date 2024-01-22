@@ -2,6 +2,7 @@ import React from 'react';
 import {useMutation, useQueryClient} from 'react-query'
 import {request} from "../../services/api/index.jsx";
 import {useToast} from "@chakra-ui/react";
+import {get} from "lodash";
 
 const postRequest = (url, attributes, config = {}) => request.post(url, attributes, config);
 
@@ -34,7 +35,7 @@ const usePostQuery = ({hideSuccessToast = false, listKeyId = null}) => {
                 },
                 onError: (data) => {
                     toast({
-                        title: data?.response?.data?.message || 'ERROR',
+                        title: data?.response?.data?.errorMsg || 'ERROR',
                         position: "top-right",
                         variant: "left-accent",
                         status: 'error',

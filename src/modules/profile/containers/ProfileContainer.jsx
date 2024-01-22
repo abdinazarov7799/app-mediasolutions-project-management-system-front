@@ -74,7 +74,7 @@ const ProfileContainer = () => {
               {isFetching ? <OverlayLoader/> : (
                   <>
                       <Heading size="md" m={4}>
-                          {t("profile page")}
+                          {t("Profile page")}
                       </Heading>
                       <Divider />
                       <Flex mt={6}>

@@ -11,39 +11,20 @@ import { get } from "lodash"
 import {useTranslation} from "react-i18next";
 import {useParams} from "react-router";
 import Tasks from "../components/Tasks.jsx";
+import {KEYS} from "../../../constants/key.js";
+import {URLS} from "../../../constants/url.js";
+import useGetOneQuery from "../../../hooks/api/useGetOneQuery.js";
+import {formatNumber, getName} from "../../../utils";
 
 const ProjectsViewContainer = () => {
     const { t } = useTranslation();
     const { id } = useParams();
-    const mockData = {
-        content: [
-            {
-                id: 1,
-                name: "Panda Telegram bot",
-                serviceType: "Telegram bot",
-                client: "Misha",
-                responsiblePerson: 'Rajabov A.',
-                participants: 'Diyor, Jamgirov A.',
-                status: 'Yonyabdi',
-                deadline: '24.12.2023',
-                agreedPrice: '500$',
-                clientNumber: "+998 90 941 0158"
-            },
-            {
-                id: 2,
-                name: "Panda Telegram bot",
-                serviceType: "Telegram bot",
-                client: "Misha",
-                responsiblePerson: 'Rajabov A.',
-                participants: 'Diyor, Jamgirov A.',
-                status: 'Yonyabdi',
-                deadline: '24.12.2023',
-                agreedPrice: '500$',
-                clientNumber: "+998 90 941 01 58"
-            },
-        ]
-    }
-    const data = mockData.content.find(item => item.id == id);
+    const {data,isLoading} = useGetOneQuery({
+        key: KEYS.get_project,
+        url: URLS.get_project,
+        id,
+    });
+    const headData = get(data,'data.data',{});
     return(
         <>
             <Box bg={'white'} p={4} width="100%" borderRadius="md">
@@ -63,7 +44,9 @@ const ProjectsViewContainer = () => {
                     >
                         <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
                             <StatLabel fontSize={16} mb={1}>{t("Status")}</StatLabel>
-                            <StatNumber fontSize={16}>{get(data, 'status')}</StatNumber>
+                            <StatNumber fontSize={16}>
+                                {getName('status',get(headData, 'status','-'))}
+                            </StatNumber>
                         </Stat>
                     </Box>
                     <Box
@@ -79,9 +62,9 @@ const ProjectsViewContainer = () => {
                         px={4}
                     >
                         <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
-                            <StatLabel fontSize={16} mb={1}>{t("Agreed price")}</StatLabel>
+                            <StatLabel fontSize={16} mb={1}>{t("Price")}</StatLabel>
                             <StatNumber fontSize={16}>
-                                {get(data, 'agreedPrice')}
+                                {formatNumber(get(headData, 'price','-'))} {t("so'm")}
                             </StatNumber>
                         </Stat>
                     </Box>
@@ -100,7 +83,26 @@ const ProjectsViewContainer = () => {
                         <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
                             <StatLabel fontSize={16} mb={1}>{t("Deadline")}</StatLabel>
                             <StatNumber fontSize={16}>
-                                {get(data, 'deadline')}
+                                {get(headData, 'deadline','-')}
+                            </StatNumber>
+                        </Stat>
+                    </Box>
+                    <Box
+                        display={"flex"}
+                        flexDirection={{
+                            sm: "column",
+                            lg: "row",
+                        }}
+                        borderWidth={1}
+                        rounded={"lg"}
+                        shadow={"sm"}
+                        py={2}
+                        px={4}
+                    >
+                        <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
+                            <StatLabel fontSize={16} mb={1}>{t("Type")}</StatLabel>
+                            <StatNumber fontSize={16}>
+                                {getName('service',get(headData, 'type','-'))}
                             </StatNumber>
                         </Stat>
                     </Box>
@@ -119,7 +121,7 @@ const ProjectsViewContainer = () => {
                         <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
                             <StatLabel fontSize={16} mb={1}>{t("Responsible Person")}</StatLabel>
                             <StatNumber fontSize={16}>
-                                {get(data, 'responsiblePerson')}
+                                {get(headData, 'responsiblePerson','-')}
                             </StatNumber>
                         </Stat>
                     </Box>
@@ -136,9 +138,85 @@ const ProjectsViewContainer = () => {
                         px={4}
                     >
                         <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
-                            <StatLabel fontSize={16} mb={1}>{t("Client Number")}</StatLabel>
+                            <StatLabel fontSize={16} mb={1}>{t("Name")}</StatLabel>
                             <StatNumber fontSize={16}>
-                                {get(data, 'clientNumber')}
+                                {get(headData, 'name','-')}
+                            </StatNumber>
+                        </Stat>
+                    </Box>
+                    <Box
+                        display={"flex"}
+                        flexDirection={{
+                            sm: "column",
+                            lg: "row",
+                        }}
+                        borderWidth={1}
+                        rounded={"lg"}
+                        shadow={"sm"}
+                        py={2}
+                        px={4}
+                    >
+                        <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
+                            <StatLabel fontSize={16} mb={1}>{t("Description")}</StatLabel>
+                            <StatNumber fontSize={16}>
+                                {get(headData, 'description','-')}
+                            </StatNumber>
+                        </Stat>
+                    </Box>
+                    <Box
+                        display={"flex"}
+                        flexDirection={{
+                            sm: "column",
+                            lg: "row",
+                        }}
+                        borderWidth={1}
+                        rounded={"lg"}
+                        shadow={"sm"}
+                        py={2}
+                        px={4}
+                    >
+                        <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
+                            <StatLabel fontSize={16} mb={1}>{t("Client name")}</StatLabel>
+                            <StatNumber fontSize={16}>
+                                {get(headData, 'clientName','-')}
+                            </StatNumber>
+                        </Stat>
+                    </Box>
+                    <Box
+                        display={"flex"}
+                        flexDirection={{
+                            sm: "column",
+                            lg: "row",
+                        }}
+                        borderWidth={1}
+                        rounded={"lg"}
+                        shadow={"sm"}
+                        py={2}
+                        px={4}
+                    >
+                        <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
+                            <StatLabel fontSize={16} mb={1}>{t("Client phone")}</StatLabel>
+                            <StatNumber fontSize={16}>
+                                {get(headData, 'clientPhone1','-')}
+                            </StatNumber>
+                        </Stat>
+                    </Box>
+                    <Box
+                        display={"flex"}
+                        flexDirection={{
+                            sm: "column",
+                            lg: "row",
+                        }}
+                        borderWidth={1}
+                        rounded={"lg"}
+                        shadow={"sm"}
+                        py={2}
+                        px={4}
+                    >
+                        <Stat display={"flex"} justifyContent={"center"} textAlign={"center"}>
+                            <StatLabel fontSize={16} mb={1}>{t("Client phone")}</StatLabel>
+                            <StatNumber fontSize={16}>
+                                {get(headData, 'clientPhone2','-')}
                             </StatNumber>
                         </Stat>
                     </Box>

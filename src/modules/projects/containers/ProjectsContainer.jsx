@@ -9,7 +9,7 @@ import {
     Th, Thead,
     Tr, useDisclosure
 } from "@chakra-ui/react";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import OverlayLoader from "../../../components/loader/overlay-loader.jsx";
 import Pagination from "../../../components/pagination/index.jsx";
@@ -29,15 +29,23 @@ const ProjectsContainer = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
     const [active, setActive] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const {data,isLoading,isFetching,refetch} = useGetAllQuery({
         key: KEYS.projects_list,
         url: URLS.projects_list,
-        page,
+        params: {
+            params: {
+                page,
+                size,
+            }
+        }
     });
     const headData = get(data,'data',{});
-
+    useEffect(() => {
+        refetch();
+    }, [page]);
     return(
         <>
             <Box bg={'white'} p={4} width="100%" borderRadius="md">
@@ -111,7 +119,7 @@ const ProjectsContainer = () => {
                 </TableContainer>
                 <Pagination
                     setPage={setPage}
-                    pageCount={get(data, "data.totalPages", 0)}
+                    pageCount={get(data, "data.totalPages", 2)}
                     page={page}
                 />
             </Box>

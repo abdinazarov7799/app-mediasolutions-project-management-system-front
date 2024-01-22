@@ -1,13 +1,8 @@
 import {
-    Badge, Box,
-    Button,
-    Flex, FormControl, FormLabel,
-    Heading, Image, Input,
-    Modal, ModalBody,
-    ModalCloseButton,
-    ModalContent, ModalFooter,
-    ModalHeader,
-    ModalOverlay, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr,
+    Badge,
+    Flex,
+    Heading,
+    Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr,
     useDisclosure
 } from "@chakra-ui/react";
 import {useTranslation} from "react-i18next";
@@ -16,25 +11,33 @@ import OverlayLoader from "../../../components/loader/overlay-loader.jsx";
 import {get, isEmpty, isEqual} from "lodash";
 import {getStatus} from "../../../utils/index.js";
 import React, {useState} from "react";
-import NoDataImg from '../../../assets/images/noData.jpg'
-import {ButtonFilled, ButtonOutlined} from "../../../components/ui/Button.jsx";
+import {ButtonOutlined} from "../../../components/ui/Button.jsx";
 import {CreateTask} from "./CreateTask.jsx";
+import {KEYS} from "../../../constants/key.js";
+import {URLS} from "../../../constants/url.js";
+import Pagination from "../../../components/pagination/index.jsx";
+import useGetOneQuery from "../../../hooks/api/useGetOneQuery.js";
+import {useParams} from "react-router";
+import useGetAllQuery from "../../../hooks/api/useGetAllQuery.js";
 
 const Tasks = () => {
+    const {id} = useParams();
     const { t } = useTranslation()
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [isFetching, setIsFetching] = useState(false);
-    const data = [
-        {
-            id: 1,
-            name: "Botni bitirish kere",
-            createdPerson: "Rajabov A.",
-            files: "doc.docx, abc.pdf",
-            participants: 'Diyor, Jamgirov A.',
-            status: 'Jarayonda',
-            deadline: '24.12.2023'
-        },
-    ]
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
+    const {data,isLoading,isFetching,refetch} = useGetOneQuery({
+        key: KEYS.tasks_list,
+        url: URLS.tasks_list,
+        id,
+        params: {
+            params: {
+                page,
+                size,
+            }
+        }
+    });
+
   return(
       <>
             <Flex mt={8}>
@@ -63,11 +66,11 @@ const Tasks = () => {
                       </Tr>
 
                   </Thead>
-                  {isEmpty(data) ? (
+                  { isEmpty(get(data,'data.data',[])) ? (
                       <span>No Tasks</span>
                   ) : (
                       <Tbody>
-                          {data?.map((item, i) => (
+                          {get(data,'data.data',[]).map((item, i) => (
                               <Tr
                                   key={i + 1}
                               >
@@ -91,6 +94,11 @@ const Tasks = () => {
                   <Tfoot />
               </Table>
           </TableContainer>
+          <Pagination
+              setPage={setPage}
+              pageCount={get(data, "data.totalPages", 1)}
+              page={page}
+          />
       </>
   )
 }

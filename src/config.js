@@ -32,20 +32,20 @@ const config = {
   ],
   STATUS: [
     {
-      label: 'yaratilgan',
-      value: ''
+      label: 'Yaratilgan',
+      value: 'CREATED'
     },
     {
-      label: 'jarayonda',
-      value: ''
+      label: 'Jarayonda',
+      value: 'IN_PROGRESS'
     },
     {
-      label: "deadline o'tib ketdi",
-      value: ''
+      label: "Deadline o'tib ketdi",
+      value: 'DEADLINE_HAS_PASSED'
     },
     {
-      label: 'tugallangan',
-      value: ''
+      label: 'Tugallangan',
+      value: 'COMPLETED'
     },
   ],
 }
